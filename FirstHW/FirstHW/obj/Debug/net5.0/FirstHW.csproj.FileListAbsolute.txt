@@ -1,0 +1,16 @@
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.exe
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.deps.json
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.runtimeconfig.json
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.runtimeconfig.dev.json
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.dll
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\ref\FirstHW.dll
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\bin\Debug\net5.0\FirstHW.pdb
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.csproj.AssemblyReference.cache
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.GeneratedMSBuildEditorConfig.editorconfig
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.AssemblyInfoInputs.cache
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.AssemblyInfo.cs
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.csproj.CoreCompileInputs.cache
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.dll
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\ref\FirstHW.dll
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.pdb
+J:\Education\Programming\Patterns\PatternsHW\FirstHW\FirstHW\obj\Debug\net5.0\FirstHW.genruntimeconfig.cache
