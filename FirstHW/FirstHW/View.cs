@@ -14,7 +14,7 @@ namespace FirstHW
         public void ShowConsole()
         {
             Console.WriteLine("Здравствуйте, вас приветствует математическая программа.");
-            Console.WriteLine("Пожалуйста введите число.");
+            Console.WriteLine("Пожалуйста введите целое положительное число.");
             Console.WriteLine("Для выхода нажмите Q.");
 
             GetNumber();
