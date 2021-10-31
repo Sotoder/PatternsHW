@@ -14,6 +14,7 @@ namespace Asteroids
         private float _force;
         private Transform _transform;
         private Camera _camera;
+        private MoveTypes _moveType;
 
         public Ship(Rigidbody2D rigitBody, Transform transform, InputController inputController, ShipInitializationData shipData, MoveTypes moveType)
         {
@@ -24,6 +25,7 @@ namespace Asteroids
             _barrel = shipData.Barrel;
             _force = shipData.Force;
             _transform = transform;
+            _moveType = moveType;
 
             _inputController = inputController as IShotingInput;
             _inputController.FireButtonDown += Fire;
@@ -33,7 +35,15 @@ namespace Asteroids
         {
             var direction = Input.mousePosition - _camera.WorldToScreenPoint(_transform.position);
             _moutionController.Rotation(direction);
-            _moutionController.Move(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), Time.deltaTime);
+            if(!(_moveType == MoveTypes.Force))
+            {
+                _moutionController.Move(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), Time.deltaTime);
+            }
+        }
+
+        public void FixedExecute()
+        {
+            _moutionController.Move(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), Time.fixedDeltaTime);
         }
 
         public void Fire()

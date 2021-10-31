@@ -32,6 +32,14 @@ namespace Asteroids
             _inputController.Execute();
         }
 
+        private void FixedUpdate()
+        {
+            if(_moveType == MoveTypes.Force)
+            {
+                _ship.FixedExecute();
+            }
+        }
+
         private void OnCollisionEnter2D(Collision2D other)
         {
             gotDamaged.Invoke();

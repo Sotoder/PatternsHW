@@ -239,12 +239,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHP: 100
   _shipData:
-    _speed: 50
+    _speed: 5
     _acceleration: 2
     _bullet: {fileID: 893634572917366678, guid: d25c915523dcdcb4eaab088531be3db6, type: 3}
     _barrel: {fileID: 1589566115}
     _force: 900
-  _moveType: 2
+  _moveType: 0
 --- !u!212 &1589566114
 SpriteRenderer:
   m_ObjectHideFlags: 0

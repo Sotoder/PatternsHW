@@ -14,9 +14,9 @@ namespace Asteroids
             _rigidbody = rigidbody;
         }
 
-        public override void Move(float horizontal, float vertical, float deltaTime)
+        public override void Move(float horizontal, float vertical, float fixedDeltaTime)
         {
-            var speed = deltaTime * Speed;
+            var speed = fixedDeltaTime * Speed;
             _move.Set(horizontal * speed, vertical * speed, 0.0f);
             _rigidbody.velocity = _move * speed * _force;
         }
