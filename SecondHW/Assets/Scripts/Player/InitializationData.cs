@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Asteroids
 {
     [Serializable]
-    public struct PlayerInitializationData
+    public struct InitializationData
     {
         [SerializeField] private float _maxHP;
         [SerializeField] private MoveTypes _moveType;

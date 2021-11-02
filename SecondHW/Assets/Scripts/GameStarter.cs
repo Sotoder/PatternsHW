@@ -4,18 +4,21 @@ namespace Asteroids
 {
     public class GameStarter : MonoBehaviour
     {
-        [SerializeField] PlayerInitializationData _initializationData;
+        [SerializeField] InitializationData _initializationData;
         [SerializeField] Player _player;
 
         private PlayerController _playerController;
+        private InputController _inputController;
 
         private void Start()
         {
-            _playerController = new PlayerController(_initializationData, _player);
+            _inputController = new InputController();
+            _playerController = new PlayerController(_initializationData, _player, _inputController);
         }
 
         private void Update()
         {
+            _inputController.Execute();
             _playerController.Execute(Time.deltaTime);
         }
 

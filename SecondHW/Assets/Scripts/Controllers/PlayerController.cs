@@ -6,31 +6,64 @@ namespace Asteroids
     {
         private Player _player;
         private InputController _inputController;
+        private Camera _camera;
+        private MoveTypes _moveType;
 
-        public PlayerController (PlayerInitializationData playerInitializationData, Player player)
+        public PlayerController (InitializationData initializationData, Player player, InputController inputController)
         {
-            _inputController = new InputController();
-            player.Init(playerInitializationData, _inputController);
+            player.Init(initializationData);
 
+            _inputController = inputController;
             _player = player;
             _player.notEnoughthHP += GameOver;
+
+            _inputController = inputController;
+            _inputController.accelerationButtonDown += PlayerAddAcceleration;
+            _inputController.accelerationButtonUp += PlayerRemoveAcceleration;
+            _inputController.fireButtonDown += PlayerFire;
+
+            _camera = Camera.main;
+            _moveType = initializationData.MoveType;
         }
 
         public void Execute(float deltaTime)
         {
-            _inputController.Execute();
-            _player.Execute(deltaTime);
+            var direction = Input.mousePosition - _camera.WorldToScreenPoint(_player.transform.position);
+            _player.Rotation(direction);
+            if (!(_moveType == MoveTypes.Force))
+            {
+                _player.Move(_inputController.horizontal, _inputController.vertical, deltaTime);
+            }
         }
 
         public void FixedExecute(float fixedDeltaTime)
         {
-            _player.FixedExecute(fixedDeltaTime);
+            if (_moveType == MoveTypes.Force)
+            {
+                _player.Move(_inputController.horizontal, _inputController.vertical, fixedDeltaTime);
+            }
         }
-        
+        private void PlayerFire()
+        {
+            _player.Fire();
+        }
+
+        private void PlayerRemoveAcceleration()
+        {
+            _player.RemoveAcceleration();
+        }
+
+        private void PlayerAddAcceleration()
+        {
+            _player.AddAcceleration();
+        }
+
         private void GameOver()
         {
             Object.Destroy(_player.gameObject);
-            _player.Dispose();
+            _inputController.accelerationButtonDown -= PlayerAddAcceleration;
+            _inputController.accelerationButtonUp -= PlayerRemoveAcceleration;
+            _inputController.fireButtonDown -= PlayerFire;
         }
     }
 }
