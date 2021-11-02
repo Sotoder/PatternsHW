@@ -4,8 +4,10 @@ using UnityEngine;
 namespace Asteroids
 {
     [Serializable]
-    public struct ShipInitializationData
+    public struct PlayerInitializationData
     {
+        [SerializeField] private float _maxHP;
+        [SerializeField] private MoveTypes _moveType;
         [SerializeField] private float _speed;
         [SerializeField] private float _acceleration;
         [SerializeField] private Rigidbody2D _bullet;
@@ -17,5 +19,7 @@ namespace Asteroids
         public float Force { get => _force; }
         public float Speed { get => _speed; }
         public float Acceleration { get => _acceleration; }
+        public float MaxHP { get => _maxHP; }
+        public MoveTypes MoveType { get => _moveType; }
     }
 }
