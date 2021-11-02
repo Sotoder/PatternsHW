@@ -28,6 +28,7 @@ namespace Asteroids
             _bullet = initializationData.Bullet;
             _barrel = initializationData.Barrel;
             _force = initializationData.Force;
+            _moveType = initializationData.MoveType;
         }
     }
 }
