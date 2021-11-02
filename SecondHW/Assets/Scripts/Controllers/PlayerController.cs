@@ -9,10 +9,8 @@ namespace Asteroids
         private Camera _camera;
         private MoveTypes _moveType;
 
-        public PlayerController (InitializationData initializationData, Player player, InputController inputController)
+        public PlayerController (MoveTypes moveType, Player player, InputController inputController)
         {
-            player.Init(initializationData);
-
             _inputController = inputController;
             _player = player;
             _player.notEnoughthHP += GameOver;
@@ -23,7 +21,7 @@ namespace Asteroids
             _inputController.fireButtonDown += PlayerFire;
 
             _camera = Camera.main;
-            _moveType = initializationData.MoveType;
+            _moveType = moveType;
         }
 
         public void Execute(float deltaTime)

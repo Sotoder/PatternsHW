@@ -12,8 +12,12 @@ namespace Asteroids
 
         private void Start()
         {
+            _player.Init(_initializationData);
             _inputController = new InputController();
-            _playerController = new PlayerController(_initializationData, _player, _inputController);
+            _playerController = new PlayerController(_initializationData.MoveType, _player, _inputController);
+
+            IEnemyFactory factory = new AsteroidFactory();
+            factory.Create(new Health(100.0f, 100.0f));
         }
 
         private void Update()
