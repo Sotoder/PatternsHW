@@ -16,12 +16,12 @@ namespace Asteroids
 
         private void Update()
         {
-            _playerController.Execute();
+            _playerController.Execute(Time.deltaTime);
         }
 
         private void FixedUpdate()
         {
-            _playerController.FixedExecute();
+            _playerController.FixedExecute(Time.fixedDeltaTime);
         }
     }
 }

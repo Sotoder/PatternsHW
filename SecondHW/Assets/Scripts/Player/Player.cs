@@ -8,6 +8,7 @@ namespace Asteroids
         public Action notEnoughthHP = delegate () { };
 
         private PlayerData _data;
+        private Camera _camera;
 
         private IMove _moveImplementation;
         private IRotation _rotationImplementation;
@@ -30,6 +31,7 @@ namespace Asteroids
             };
 
             _rotationImplementation = new RotationShip(transform);
+            _camera = Camera.main;
 
             _inputController = inputController;
             _inputController.accelerationButtonDown += AddAcceleration;
@@ -37,6 +39,25 @@ namespace Asteroids
             _inputController.fireButtonDown += Fire;
         }
 
+        
+        public void Execute(float deltaTime)
+        {
+            var direction = Input.mousePosition - _camera.WorldToScreenPoint(transform.position);
+            Rotation(direction);
+            if (!(_data.MoveType == MoveTypes.Force))
+            {
+                Move(deltaTime);
+            }
+        }
+
+        public void FixedExecute (float fixedDeltaTime)
+        {
+            if (_data.MoveType == MoveTypes.Force)
+            {
+                Move(fixedDeltaTime);
+            }
+        }
+        
         public void Fire()
         {
             var temAmmunition = Instantiate(_data.Bullet, _data.Barrel.position, _data.Barrel.rotation);
