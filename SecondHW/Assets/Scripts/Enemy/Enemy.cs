@@ -1,15 +1,16 @@
+using System;
 using UnityEngine;
 
 namespace Asteroids
 {
-    public abstract class Enemy : MonoBehaviour
+    public abstract class Enemy : MonoBehaviour, IEnemy
     {
-        public static IEnemyFactory Factory;
         public Health Health { get; protected set; }
+        public bool IsOnScene { get; set; }
 
-        public void DependencyInjectHealth(Health hp)
+        public void DependencyInjectHealth(float maxHP)
         {
-            Health = hp;
+            Health = new Health(maxHP);
         }
     }
 }

@@ -26,8 +26,6 @@ namespace Asteroids
 
         public void Execute(float deltaTime)
         {
-            var direction = Input.mousePosition - _camera.WorldToScreenPoint(_player.transform.position);
-            _player.Rotation(direction);
             if (!(_moveType == MoveTypes.Force))
             {
                 _player.Move(_inputController.horizontal, _inputController.vertical, deltaTime);

@@ -1,7 +1,10 @@
+using UnityEngine;
+
 namespace Asteroids
 {
-    public interface IEnemyFactory
+    public interface IEnemyFactory<T> where T: IEnemy 
     {
-        Enemy Create(Health hp);
+        T Create(AsteroidInitData initData);
+        T Create(Asteroid _asteroidPref, Vector3 position, Quaternion rotation, float hp);
     }
 }

@@ -8,18 +8,19 @@ namespace Asteroids
         public Action notEnoughthHP = delegate () { };
 
         private PlayerData _data;
+        private BulletPool _bulletPool;
 
         private IMove _moveImplementation;
-        private IRotation _rotationImplementation;
 
         public float Speed => _moveImplementation.Speed;
 
 
-        public void Init (InitializationData initializationData)
+        public void Init (InitializationData initializationData, BulletPool bulletPool)
         {
             _data = new PlayerData(initializationData);
-            var rigitbody = GetComponent<Rigidbody2D>();
+            _bulletPool = bulletPool;
 
+            var rigitbody = GetComponent<Rigidbody2D>();
             _moveImplementation = initializationData.MoveType switch
             {
                 MoveTypes.Transform => new MoveTransform(transform, _data.Speed),
@@ -27,24 +28,17 @@ namespace Asteroids
                 MoveTypes.Force => new ForceMove(_data.Speed, rigitbody, _data.Force),
                 _ => new ForceMove(_data.Speed, rigitbody, _data.Force)
             };
-
-            _rotationImplementation = new RotationShip(transform);
         }
 
         public void Fire()
         {
-            var temAmmunition = Instantiate(_data.Bullet, _data.Barrel.position, _data.Barrel.rotation);
-            temAmmunition.AddForce(_data.Barrel.up * _data.Force);
+            var bullet = _bulletPool.GetBullet(_data.Barrel.position, _data.Barrel.rotation);
+            bullet.rigitBody.velocity = _data.Barrel.up * Bullet.BULLET_SPEED;
         }
 
         public void Move(float horizontal, float vertical, float deltaTime)
         {
             _moveImplementation.Move(horizontal, vertical, deltaTime);
-        }
-
-        public void Rotation(Vector3 direction)
-        {
-            _rotationImplementation.Rotation(direction);
         }
 
         public void AddAcceleration()
@@ -63,9 +57,12 @@ namespace Asteroids
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            ChangeHP();
+            if (collision.gameObject.layer == 3)
+            {
+                ChangeHP();
+            }
         }
 
         private void ChangeHP()
