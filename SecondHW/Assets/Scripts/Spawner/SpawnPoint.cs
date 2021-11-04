@@ -1,13 +1,15 @@
-﻿namespace Asteroids
+﻿using UnityEngine;
+
+namespace Asteroids
 {
     public class SpawnPoint
     {
         public bool isBusy { get; set; }
+        public bool isShipOnTrack { get; set; }
         public float position;
 
-        public SpawnPoint(bool isBusy, float position)
+        public SpawnPoint(float position)
         {
-            this.isBusy = isBusy;
             this.position = position;
         }
 
@@ -15,5 +17,11 @@
         {
             isBusy = false;
         }
+        public void ShipIsGone()
+        {
+            isBusy = false;
+            isShipOnTrack = false;
+        }
+
     }
 }

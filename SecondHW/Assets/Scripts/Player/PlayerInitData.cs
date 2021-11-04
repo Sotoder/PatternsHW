@@ -1,10 +1,10 @@
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Asteroids
 {
     [Serializable]
-    public struct InitializationData
+    public struct PlayerInitData
     {
         [SerializeField] private float _maxHP;
         [SerializeField] private MoveTypes _moveType;

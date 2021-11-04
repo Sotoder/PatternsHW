@@ -2,11 +2,10 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public sealed class PlayerController
+    public sealed class PlayerController: IController, IExecute, IFixedExecute
     {
         private Player _player;
         private InputController _inputController;
-        private Camera _camera;
         private MoveTypes _moveType;
 
         public PlayerController (MoveTypes moveType, Player player, InputController inputController)
@@ -19,8 +18,6 @@ namespace Asteroids
             _inputController.accelerationButtonDown += PlayerAddAcceleration;
             _inputController.accelerationButtonUp += PlayerRemoveAcceleration;
             _inputController.fireButtonDown += PlayerFire;
-
-            _camera = Camera.main;
             _moveType = moveType;
         }
 

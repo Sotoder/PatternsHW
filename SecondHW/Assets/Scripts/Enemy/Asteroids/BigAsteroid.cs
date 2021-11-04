@@ -2,6 +2,6 @@ namespace Asteroids
 {
     public class BigAsteroid : Asteroid
     {
-        public static IEnemyFactory<IAsteroid> Factory;
+        public static IEnemyFactory<Asteroid> Factory;
     }
 }

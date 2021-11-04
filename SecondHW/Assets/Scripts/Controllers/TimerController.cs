@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Asteroids
 {
-    public class TimerController
+    public class TimerController: IController, IExecute
     {
         private static List<Timer> _timers = new List<Timer>();
 
@@ -19,7 +19,7 @@ namespace Asteroids
             _timers.Remove(timer);
         }
 
-        public void Execute()
+        public void Execute(float deltatime)
         {
             for (int i = 0; i < _timers.Count; i++)
             {

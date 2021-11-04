@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 namespace Asteroids {
-    public class InputController
+    public class InputController: IController, IExecute
     {
         public Action fireButtonDown = delegate () { };
         public Action accelerationButtonDown = delegate () { };
@@ -13,7 +13,7 @@ namespace Asteroids {
         private const string HORIZONTAL = "Horizontal";
         private const string VERTICAL = "Vertical";
 
-        public void Execute()
+        public void Execute(float deltaTime)
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
             {

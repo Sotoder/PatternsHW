@@ -5,25 +5,13 @@ namespace Asteroids
     public class GameStarter : MonoBehaviour
     {
         [SerializeField] InitializationData _initializationData;
-        [SerializeField] Player _player;
-        [SerializeField] AsteroidList _asteroidList;
 
-        private PlayerController _playerController;
-        private InputController _inputController;
-        private AsteroidSpawnController _AsteroidSpawnController;
-        private TimerController _timerController;
+        private GameController _gameController;
 
         private void Start()
         {
-            _timerController = new TimerController();
-
-            var bulletPool = new BulletPool(20, _timerController);
-            var asteroidPool = new AsteroidPool(10, _timerController);
-
-            _player.Init(_initializationData, bulletPool);
-            _inputController = new InputController();
-            _playerController = new PlayerController(_initializationData.MoveType, _player, _inputController);
-            _AsteroidSpawnController = new AsteroidSpawnController(asteroidPool, 9, _timerController);
+            _gameController = new GameController();
+            new MainInitializator(_gameController, _initializationData);
 
             //EnemyShip.CreateShipEnemy(100f); //- Демонстрация всех видов Фабрик
 
@@ -36,22 +24,18 @@ namespace Asteroids
             //BigAsteroid.Factory = factory;
             //var bigAsteroidPref = Resources.Load<BigAsteroid>("Enemy/BigAsteroid");
             //BigAsteroid.Factory.Create(new AsteroidInitData(new Vector2(6, 4), new Vector2(0, 0), 100, bigAsteroidPref));
-
-
-
         }
 
         private void Update()
         {
-            _inputController.Execute();
-            _playerController.Execute(Time.deltaTime);
-            _AsteroidSpawnController.Execute();
-            _timerController.Execute();
+            var deltaTime = Time.deltaTime;
+            _gameController.Execute(deltaTime);
         }
 
         private void FixedUpdate()
         {
-            _playerController.FixedExecute(Time.fixedDeltaTime);
+            var fixedDeltaTime = Time.fixedDeltaTime;
+            _gameController.FixedExecute(fixedDeltaTime);
         }
     }
 }

@@ -18,14 +18,14 @@ namespace Asteroids
         public float Speed { get => _speed; }
         public float Acceleration { get => _acceleration; }
 
-        public PlayerData(InitializationData initializationData)
+        public PlayerData(PlayerInitData data)
         {
-            hp = initializationData.MaxHP;
-            _speed = initializationData.Speed;
-            _acceleration = initializationData.Acceleration;
-            _bullet = initializationData.Bullet;
-            _barrel = initializationData.Barrel;
-            _force = initializationData.Force;
+            hp = data.MaxHP;
+            _speed = data.Speed;
+            _acceleration = data.Acceleration;
+            _bullet = data.Bullet;
+            _barrel = data.Barrel;
+            _force = data.Force;
         }
     }
 }

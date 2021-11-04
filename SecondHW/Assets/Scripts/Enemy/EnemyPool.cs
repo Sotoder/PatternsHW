@@ -5,24 +5,30 @@ using Object = UnityEngine.Object;
 
 namespace Asteroids
 {
-    public class AsteroidPool
+    public class EnemyPool
     {
-        private readonly List<IAsteroid> _smallAsteroidPool;
-        private readonly List<IAsteroid> _bigAsteroidPool;
+        private readonly List<Asteroid> _smallAsteroidPool;
+        private readonly List<Asteroid> _bigAsteroidPool;
+        private readonly List<EnemyShip> _shipPool;
         private readonly AsteroidFactory _asteroidFactory;
         private readonly int _capacityPool;
         private Transform _rootPool;
-        private TimerController _timerController;
 
         private const int SMALL_ASTEROID_HP = 100;
         private const int BIG_ASTEROID_HP = 200;
 
-        public AsteroidPool(int capacityPool, TimerController timerController)
+        public List<Asteroid> SmallAsteroidPool => _smallAsteroidPool;
+
+        public List<Asteroid> BigAsteroidPool => _bigAsteroidPool;
+
+        public List<EnemyShip> ShipPool => _shipPool;
+
+        public EnemyPool(int capacityPool)
         {
-            _timerController = timerController;
             _asteroidFactory = new AsteroidFactory();
-            _smallAsteroidPool = new List<IAsteroid>(capacityPool);
-            _bigAsteroidPool = new List<IAsteroid>(capacityPool);
+            _shipPool = new List<EnemyShip>(capacityPool);
+            _smallAsteroidPool = new List<Asteroid>(capacityPool);
+            _bigAsteroidPool = new List<Asteroid>(capacityPool);
             _capacityPool = capacityPool;
 
             if (!_rootPool)
@@ -45,47 +51,67 @@ namespace Asteroids
                 AddAsteroid(_smallAsteroidPool, asteroid);
                 asteroid = _asteroidFactory.Create(bigAsteroidPref, _rootPool.position, _rootPool.rotation, BIG_ASTEROID_HP);
                 AddAsteroid(_bigAsteroidPool, asteroid);
+                var ship = EnemyShip.CreateShipEnemy(150f);
+                AddShip(_shipPool, ship);
             }
         }
 
-        private void AddAsteroid(List<IAsteroid> asteroids, IAsteroid asteroid)
+        private void AddAsteroid(List<Asteroid> asteroids, Asteroid asteroid)
         {
             asteroid.transform.SetParent(_rootPool);
             asteroids.Add(asteroid);
         }
 
-        public IAsteroid GetAsteroid(AsteroidType asteroidType, Vector3 position)
+        private void AddShip(List<EnemyShip> ships, EnemyShip ship)
         {
-            IAsteroid result;
-            result = asteroidType switch
+            ship.gameObject.transform.position = _rootPool.position;
+            ship.gameObject.transform.rotation = _rootPool.rotation;
+            ship.transform.SetParent(_rootPool);
+            ships.Add(ship);
+        }
+
+        public Enemy GetEnemy(EnemyType enemyType, Vector3 position)
+        {
+            Enemy result;
+            result = enemyType switch
             {
-                AsteroidType.Asteroid => GetSmalAsteroid(),
-                AsteroidType.BigAsteroid => GetBigAsteroid(),
-                _ => throw new NotImplementedException("Не найден тип астероида")
+                EnemyType.Asteroid => (Enemy)GetSmalAsteroid(),
+                EnemyType.BigAsteroid => (Enemy)GetBigAsteroid(),
+                EnemyType.EnemyShip => (Enemy)GetShip(),
+                _ => throw new NotImplementedException("Не найден тип врага")
             };
 
             result.IsOnScene = true;
             result.transform.parent = null;
             result.transform.position = position;
-
-            var flyTimeTimer = new Timer(3f);
-            flyTimeTimer.timerIsOver += delegate ()
-            {
-                if (result.IsOnScene)
-                {
-                    ReturnToPool(result);
-                }
-            };
-            _timerController.Add(flyTimeTimer);
-
-            result.Destroed += ReturnToPool;
+            result.rigitBody.isKinematic = false;
 
             return result;
         }
 
-        private IAsteroid GetBigAsteroid()
+        private EnemyShip GetShip()
         {
-            IAsteroid asteroid = null;
+            EnemyShip ship = null;
+            for (int i = 0; i < _shipPool.Count; i++)
+            {
+                if (!_shipPool[i].IsOnScene)
+                {
+                    ship = _shipPool[i];
+                }
+            }
+            if (ship is null)
+            {
+                ship = EnemyShip.CreateShipEnemy(150f);
+                ship.gameObject.transform.position = _rootPool.position;
+                ship.gameObject.transform.rotation = _rootPool.rotation;
+                _shipPool.Add(ship);
+            }
+            return ship;
+        }
+
+        private Asteroid GetBigAsteroid()
+        {
+            Asteroid asteroid = null;
             for (int i = 0; i < _bigAsteroidPool.Count; i++)
             {
                 if (!_bigAsteroidPool[i].IsOnScene)
@@ -103,9 +129,9 @@ namespace Asteroids
             return asteroid;
         }
 
-        private IAsteroid GetSmalAsteroid()
+        private Asteroid GetSmalAsteroid()
         {
-            IAsteroid asteroid = null;
+            Asteroid asteroid = null;
             for (int i = 0; i < _smallAsteroidPool.Count; i++)
             {
                 if (!_smallAsteroidPool[i].IsOnScene)
@@ -124,14 +150,17 @@ namespace Asteroids
             return asteroid;
         }
 
-        public void ReturnToPool(IAsteroid asteroid)
+        public void ReturnToPool(Enemy enemy)
         {
-            asteroid.transform.localPosition = _rootPool.transform.position;
-            asteroid.transform.localRotation = _rootPool.transform.rotation;
-            asteroid.transform.SetParent(_rootPool);
-            asteroid.rigitBody.velocity = Vector2.zero;
-            asteroid.Health.ChangeCurrentHealth(asteroid.Health.Max);
-            asteroid.IsOnScene = false;
+            enemy.rigitBody.Sleep();
+            enemy.rigitBody.velocity = Vector2.zero;
+            enemy.transform.localPosition = _rootPool.transform.position;
+            enemy.transform.localRotation = _rootPool.transform.rotation;
+            enemy.transform.SetParent(_rootPool);
+            enemy.rigitBody.isKinematic = true;
+            enemy.gameObject.SetActive(true);
+            enemy.Health.ChangeCurrentHealth(enemy.Health.Max);
+            enemy.IsOnScene = false;
         }
 
         public void RemovePool()

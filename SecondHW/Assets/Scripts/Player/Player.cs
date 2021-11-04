@@ -15,13 +15,13 @@ namespace Asteroids
         public float Speed => _moveImplementation.Speed;
 
 
-        public void Init (InitializationData initializationData, BulletPool bulletPool)
+        public void Init (PlayerInitData data, TimerController timerController)
         {
-            _data = new PlayerData(initializationData);
-            _bulletPool = bulletPool;
+            _data = new PlayerData(data);
+            _bulletPool = new BulletPool(20, timerController);
 
             var rigitbody = GetComponent<Rigidbody2D>();
-            _moveImplementation = initializationData.MoveType switch
+            _moveImplementation = data.MoveType switch
             {
                 MoveTypes.Transform => new MoveTransform(transform, _data.Speed),
                 MoveTypes.Acceleration => new AccelerationMove(transform, _data.Speed, _data.Acceleration),
@@ -57,7 +57,7 @@ namespace Asteroids
             }
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
+        private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.layer == 3)
             {
