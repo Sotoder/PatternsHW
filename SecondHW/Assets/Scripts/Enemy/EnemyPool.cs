@@ -75,9 +75,9 @@ namespace Asteroids
             Enemy result;
             result = enemyType switch
             {
-                EnemyType.Asteroid => (Enemy)GetSmalAsteroid(),
-                EnemyType.BigAsteroid => (Enemy)GetBigAsteroid(),
-                EnemyType.EnemyShip => (Enemy)GetShip(),
+                EnemyType.Asteroid => GetSmalAsteroid(),
+                EnemyType.BigAsteroid => GetBigAsteroid(),
+                EnemyType.EnemyShip => GetShip(),
                 _ => throw new NotImplementedException("Не найден тип врага")
             };
 
