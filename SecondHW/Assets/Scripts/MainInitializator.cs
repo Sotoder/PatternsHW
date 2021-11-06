@@ -13,10 +13,12 @@
             var inputController = new InputController();
             gameController.Add(inputController);
 
-            var playerController = new PlayerController(data.PlayerInitData.MoveType, data.Player, inputController);
-            gameController.Add(playerController);
+            var bulletPool = new BulletPool(20, timerController);
+            var playerData = new PlayerData(data.PlayerInitData);
+            data.Player.Init(playerData, bulletPool);
 
-            data.Player.Init(data.PlayerInitData, timerController);
+            var playerController = new PlayerController(data.Player, playerData, inputController);
+            gameController.Add(playerController);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Asteroids
 {
     public sealed class Player : MonoBehaviour
     {
-        public Action notEnoughthHP = delegate () { };
+        public Action getDamage = delegate () { };
 
         private PlayerData _data;
         private BulletPool _bulletPool;
@@ -15,10 +15,10 @@ namespace Asteroids
         public float Speed => _moveImplementation.Speed;
 
 
-        public void Init (PlayerInitData data, TimerController timerController)
+        public void Init (PlayerData data, BulletPool bulletPool)
         {
-            _data = new PlayerData(data);
-            _bulletPool = new BulletPool(20, timerController);
+            _data = data;
+            _bulletPool = bulletPool;
 
             var rigitbody = GetComponent<Rigidbody2D>();
             _moveImplementation = data.MoveType switch
@@ -61,21 +61,8 @@ namespace Asteroids
         {
             if (collision.gameObject.layer == 3)
             {
-                ChangeHP();
+                getDamage.Invoke();
             }
         }
-
-        private void ChangeHP()
-        {
-            if (_data.hp <= 0)
-            {
-                notEnoughthHP.Invoke();
-            }
-            else
-            {
-                _data.hp--;
-            }
-        }
-
     }
 }
