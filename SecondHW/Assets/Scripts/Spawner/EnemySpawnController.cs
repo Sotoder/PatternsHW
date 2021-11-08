@@ -15,7 +15,7 @@ namespace Asteroids
 
         private const int START_LUNCH_POSITION_Y = 7;
         private const int FORCE = 2;
-        private const float GLOBAL_COOLDOWN = 0.4f;
+        private const float GLOBAL_COOLDOWN = 0.2f;
         private const int RANDOMIZE_LUNCH_MODIFER = 20;
 
         public EnemySpawnController(EnemyPool enemyPool, int spawnPointsCount, TimerController timerController)

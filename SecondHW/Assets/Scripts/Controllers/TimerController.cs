@@ -25,7 +25,7 @@ namespace Asteroids
             {
                 if (!_timers[i].isOver)
                 {
-                    if (Time.time - _timers[i].StartTime >= _timers[i].Duration)
+                    if (Time.time - _timers[i].StartTime >= _timers[i].Duration && !_timers[i].isOver)
                     {
                         _timers[i].timerIsOver.Invoke();
                         _timers[i].isOver = true;
