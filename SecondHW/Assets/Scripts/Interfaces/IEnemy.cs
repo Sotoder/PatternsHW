@@ -10,6 +10,5 @@ namespace Asteroids
         public Transform transform { get; }
         public Rigidbody2D rigitBody { get; set; }
         public bool IsOnScene { get; set; }
-        public void DependencyInjectHealth(float maxHP);
     }
 }

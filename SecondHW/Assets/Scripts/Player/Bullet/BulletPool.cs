@@ -9,15 +9,16 @@ namespace Asteroids
         private readonly int _capacityPool;
         private Transform _rootPool;
         private TimerController _timerController;
+        private BulletFactory _factory;
 
         private const float BULLET_LIFE_TIME = 1f;
-        private const int BULLET_DAMAGE = 50;
 
-        public BulletPool(int capacityPool, TimerController timerController)
+        public BulletPool(int capacityPool, TimerController timerController, BulletFactory factory)
         {
             _bulletPool = new List<Bullet>(capacityPool);
             _capacityPool = capacityPool;
             _timerController = timerController;
+            _factory = factory;
 
             if (!_rootPool)
             {
@@ -34,7 +35,7 @@ namespace Asteroids
 
             for (int i = 0; i < _capacityPool; i++)
             {
-                var bullet = Bullet.CreateBullet(BULLET_DAMAGE);
+                var bullet = _factory.GetBullet();
                 bullet.transform.position = _rootPool.position;
                 bullet.transform.SetParent(_rootPool);
                 _bulletPool.Add(bullet);
@@ -54,7 +55,7 @@ namespace Asteroids
 
             if (bullet is null)
             {
-                bullet = Bullet.CreateBullet(BULLET_DAMAGE);
+                bullet = _factory.GetBullet();
                 _bulletPool.Add(bullet);
             }
 

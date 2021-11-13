@@ -5,24 +5,17 @@ namespace Asteroids
 {
     public class EnemyShip : Enemy, IEnemy
     {
-        public Action shipIsReturnToPool = delegate () { }; 
-        public static EnemyShip CreateShipEnemy(float maxHP)
-        {
-            var ship = Instantiate(Resources.Load<EnemyShip>("Enemy/EnemyShip"));
-            ship.rigitBody.isKinematic = true;
-            ship.Health = new Health(maxHP);
-
-            return ship;
-        }
+        public Action shipLeftScene = delegate () { }; 
 
         public void DeactivateShip()
         {
-            shipIsReturnToPool.Invoke();
+            shipLeftScene.Invoke();
         }
+
         protected override void EnemyDead()
         {
             base.EnemyDead();
-            shipIsReturnToPool.Invoke();
+            shipLeftScene.Invoke();
         }
     }
 }

@@ -82,7 +82,7 @@ namespace Asteroids
             
             if(enemy is EnemyShip)
             {
-                (enemy as EnemyShip).shipIsReturnToPool += luckyTrack.ShipIsGone;
+                (enemy as EnemyShip).shipLeftScene += luckyTrack.ShipIsGone;
             } else
             {
                 float busyTimerDuration = UnityEngine.Random.Range(1f, 2f);

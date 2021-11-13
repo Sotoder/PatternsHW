@@ -5,7 +5,10 @@ namespace Asteroids
 {
     public abstract class Enemy : MonoBehaviour, IEnemy
     {
-        public Health Health { get; protected set; }
+        public Action<Enemy> wasKilled = delegate (Enemy enemy) { };
+        [SerializeField] Health _health;
+
+        public Health Health { get => _health; protected set => _health = value; }
         public bool IsOnScene { get; set; }
         public Rigidbody2D rigitBody { get; set; }
 
@@ -14,10 +17,6 @@ namespace Asteroids
             rigitBody = GetComponent<Rigidbody2D>();
         }
 
-        public void DependencyInjectHealth(float maxHP)
-        {
-            Health = new Health(maxHP);
-        }
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.gameObject.layer == 6)
@@ -32,7 +31,8 @@ namespace Asteroids
         }
         protected virtual void EnemyDead()
         {
-            gameObject.SetActive(false);
+            wasKilled.Invoke(this);
+            Destroy(gameObject);
         }
     }
 }

@@ -1,15 +1,16 @@
+using System;
+using UnityEngine;
+
 namespace Asteroids
 {
+    [Serializable]
     public sealed class Health
     {
-        public float Max { get; }
-        public float Current { get; private set; }
+        [SerializeField] float _maxHP;
+        [SerializeField] float _current;
 
-        public Health(float max)
-        {
-            Max = max;
-            Current = max;
-        }
+        public float Max { get => _maxHP; }
+        public float Current { get => _current; private set => _current = value; }
 
         public void ChangeCurrentHealth(float hp)
         {

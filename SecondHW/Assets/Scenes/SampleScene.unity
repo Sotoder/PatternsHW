@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 1589566113}
   - component: {fileID: 1589566117}
   m_Layer: 0
-  m_Name: Hexagon Flat-Top
+  m_Name: PlayerShip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,11 +376,15 @@ MonoBehaviour:
       _moveType: 2
       _speed: 100
       _acceleration: 3
-      _bullet: {fileID: 893634572917366678, guid: d25c915523dcdcb4eaab088531be3db6, type: 3}
       _barrel: {fileID: 1876473757}
       _force: 5
     _player: {fileID: 1589566113}
     _asteroidList: {fileID: 11400000, guid: 426c55ffcdef6ca4a922c2e7e663ac2e, type: 2}
+    _bulletSprite: {fileID: -9095717837082945937, guid: 5dbf645f4b392c94baf55cb3af45e6c0, type: 3}
+    _enemyPrototypes:
+    - {fileID: 3786539068997856215, guid: 588ad23b3ef3ac44daf2a9701fc441d4, type: 3}
+    - {fileID: -2598368380393417436, guid: 2645d49bcf1fec04c8e541d07350041d, type: 3}
+    - {fileID: 3340264126034916389, guid: 8c9462bdb49d8d743b156aaf26ef1173, type: 3}
 --- !u!4 &1652932260
 Transform:
   m_ObjectHideFlags: 0

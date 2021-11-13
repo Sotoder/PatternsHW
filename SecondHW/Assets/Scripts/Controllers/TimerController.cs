@@ -23,19 +23,10 @@ namespace Asteroids
         {
             for (int i = 0; i < _timers.Count; i++)
             {
-                if (!_timers[i].isOver)
+                if (Time.time - _timers[i].StartTime >= _timers[i].Duration)
                 {
-                    if (Time.time - _timers[i].StartTime >= _timers[i].Duration && !_timers[i].isOver)
-                    {
-                        _timers[i].timerIsOver.Invoke();
-                        _timers[i].isOver = true;
-                    }
-                } else
-                {
-                    if (Time.time - _timers[i].StartTime >= CLIEAR_TIME)
-                    {
-                        _timers.Remove(_timers[i]);
-                    }
+                    _timers[i].timerIsOver.Invoke();
+                    _timers.Remove(_timers[i]);
                 }
             }
         }

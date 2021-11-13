@@ -8,17 +8,15 @@ namespace Asteroids
         public Action getDamage = delegate () { };
 
         private PlayerData _data;
-        private BulletPool _bulletPool;
 
         private IMove _moveImplementation;
 
         public float Speed => _moveImplementation.Speed;
 
 
-        public void Init (PlayerData data, BulletPool bulletPool)
+        public void Init (PlayerData data)
         {
             _data = data;
-            _bulletPool = bulletPool;
 
             var rigitbody = GetComponent<Rigidbody2D>();
             _moveImplementation = data.MoveType switch
@@ -32,7 +30,7 @@ namespace Asteroids
 
         public void Fire()
         {
-            var bullet = _bulletPool.GetBullet(_data.Barrel.position, _data.Barrel.rotation);
+            var bullet = ServiceLocator.Resolve<BulletPool>().GetBullet(_data.Barrel.position, _data.Barrel.rotation);
             bullet.rigitBody.velocity = _data.Barrel.up * Bullet.BULLET_SPEED;
         }
 

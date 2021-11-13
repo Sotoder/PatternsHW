@@ -7,7 +7,6 @@ namespace Asteroids
     {
         private float _startTime;
         private float _duration;
-        public bool isOver;
 
         public Action timerIsOver = delegate() { };
 

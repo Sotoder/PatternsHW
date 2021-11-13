@@ -14,8 +14,9 @@ namespace Asteroids
         private readonly int _capacityPool;
         private Transform _rootPool;
 
-        private const int SMALL_ASTEROID_HP = 100;
-        private const int BIG_ASTEROID_HP = 200;
+        private readonly SmallAsteroid _smallAsteroidPrototype;
+        private readonly BigAsteroid _bigAsteroidPrototype;
+        private readonly EnemyShip _enemyShipPrototype;
 
         public List<Asteroid> SmallAsteroidPool => _smallAsteroidPool;
 
@@ -23,13 +24,29 @@ namespace Asteroids
 
         public List<EnemyShip> ShipPool => _shipPool;
 
-        public EnemyPool(int capacityPool)
+        public EnemyPool(int capacityPool, List<Enemy> prototypes)
         {
             _asteroidFactory = new AsteroidFactory();
             _shipPool = new List<EnemyShip>(capacityPool);
             _smallAsteroidPool = new List<Asteroid>(capacityPool);
             _bigAsteroidPool = new List<Asteroid>(capacityPool);
             _capacityPool = capacityPool;
+
+            for (int i = 0; i < prototypes.Count; i++)
+            {
+                if (prototypes[i] is SmallAsteroid)
+                {
+                    _smallAsteroidPrototype = prototypes[i] as SmallAsteroid;
+                }
+                else if (prototypes[i] is BigAsteroid)
+                {
+                    _bigAsteroidPrototype = prototypes[i] as BigAsteroid;
+                }
+                else if (prototypes[i] is EnemyShip)
+                {
+                    _enemyShipPrototype = prototypes[i] as EnemyShip;
+                }
+            }
 
             if (!_rootPool)
             {
@@ -42,16 +59,16 @@ namespace Asteroids
 
         private void FillPool()
         {
-            var asteroidPref = Resources.Load<SmallAsteroid>("Enemy/Asteroid");
-            var bigAsteroidPref = Resources.Load<BigAsteroid>("Enemy/BigAsteroid");
-
             for (int i = 0; i < _capacityPool; i++)
             {
-                var asteroid = _asteroidFactory.Create(asteroidPref, _rootPool.position, _rootPool.rotation, SMALL_ASTEROID_HP);
+                var asteroid = _asteroidFactory.Create(_smallAsteroidPrototype);
+                asteroid.wasKilled += RemoveFromPool;
                 AddAsteroid(_smallAsteroidPool, asteroid);
-                asteroid = _asteroidFactory.Create(bigAsteroidPref, _rootPool.position, _rootPool.rotation, BIG_ASTEROID_HP);
+                asteroid = _asteroidFactory.Create(_bigAsteroidPrototype);
+                asteroid.wasKilled += RemoveFromPool;
                 AddAsteroid(_bigAsteroidPool, asteroid);
-                var ship = EnemyShip.CreateShipEnemy(150f);
+                var ship = Object.Instantiate(_enemyShipPrototype);
+                ship.wasKilled += RemoveFromPool;
                 AddShip(_shipPool, ship);
             }
         }
@@ -59,6 +76,8 @@ namespace Asteroids
         private void AddAsteroid(List<Asteroid> asteroids, Asteroid asteroid)
         {
             asteroid.transform.SetParent(_rootPool);
+            asteroid.gameObject.transform.position = _rootPool.position;
+            asteroid.gameObject.transform.rotation = _rootPool.rotation;
             asteroids.Add(asteroid);
         }
 
@@ -101,9 +120,10 @@ namespace Asteroids
             }
             if (ship is null)
             {
-                ship = EnemyShip.CreateShipEnemy(150f);
+                ship = Object.Instantiate(_enemyShipPrototype);
                 ship.gameObject.transform.position = _rootPool.position;
                 ship.gameObject.transform.rotation = _rootPool.rotation;
+                ship.wasKilled += RemoveFromPool;
                 _shipPool.Add(ship);
             }
             return ship;
@@ -121,8 +141,8 @@ namespace Asteroids
             }
             if (asteroid is null)
             {
-                var asteroidPref = Resources.Load<BigAsteroid>("Enemy/BigAsteroid");
-                asteroid = _asteroidFactory.Create(asteroidPref, _rootPool.position, _rootPool.rotation, BIG_ASTEROID_HP);
+                asteroid = _asteroidFactory.Create(_bigAsteroidPrototype);
+                asteroid.wasKilled += RemoveFromPool;
                 _bigAsteroidPool.Add(asteroid);
             }
 
@@ -142,8 +162,8 @@ namespace Asteroids
             }
             if (asteroid is null)
             {
-                var asteroidPref = Resources.Load<SmallAsteroid>("Enemy/Asteroid");
-                asteroid = _asteroidFactory.Create(asteroidPref, _rootPool.position, _rootPool.rotation, SMALL_ASTEROID_HP);
+                asteroid = _asteroidFactory.Create(_smallAsteroidPrototype);
+                asteroid.wasKilled += RemoveFromPool;
                 _smallAsteroidPool.Add(asteroid);
             }
 
@@ -166,6 +186,22 @@ namespace Asteroids
         public void RemovePool()
         {
             Object.Destroy(_rootPool.gameObject);
+        }
+
+        public void RemoveFromPool(Enemy enemy)
+        {
+            if (enemy is SmallAsteroid)
+            {
+                _smallAsteroidPool.Remove(enemy as SmallAsteroid);
+            }
+            else if (enemy is BigAsteroid)
+            {
+                _bigAsteroidPool.Remove(enemy as BigAsteroid);
+            }
+            else if (enemy is EnemyShip)
+            {
+                _shipPool.Remove(enemy as EnemyShip);
+            }
         }
     }
 }

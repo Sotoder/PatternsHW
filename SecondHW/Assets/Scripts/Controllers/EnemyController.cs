@@ -7,9 +7,9 @@ namespace Asteroids
     {
         private EnemyPool _enemyPool;
 
-        public EnemyController (GameController gameController, TimerController timerController)
+        public EnemyController (GameController gameController, TimerController timerController, List<Enemy> enemyPrototypes)
         {
-            _enemyPool = new EnemyPool(10);
+            _enemyPool = new EnemyPool(10, enemyPrototypes);
 
             var asteroidSpawnController = new EnemySpawnController(_enemyPool, 9, timerController);
             gameController.Add(asteroidSpawnController);

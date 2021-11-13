@@ -296,6 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60681b8bfed60c448345640baf8cdbc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _health:
+    _maxHP: 200
+    _current: 200
 --- !u!212 &1081403428689703832
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -355,7 +358,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6669501910071412727}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
